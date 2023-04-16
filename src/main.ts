@@ -18,6 +18,9 @@ import { TopicsRepository } from './api/topics/topics.repository';
 import { TagsController } from './api/tags/tags.controller';
 import { TagsService } from './api/tags/tags.service';
 import { TagsRepository } from './api/tags/tags.repository';
+import { CitiesController } from './api/cities/cities.controller';
+import { CitiesService } from './api/cities/cities.service';
+import { CitiesRepository } from './api/cities/cities.repository';
 
 type Bootstrap = {
   app: App;
@@ -42,6 +45,9 @@ export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
   bind<TagsController>(Dependency.TagsController).to(TagsController);
   bind<TagsService>(Dependency.TagsService).to(TagsService);
   bind<TagsRepository>(Dependency.TagsRepository).to(TagsRepository);
+  bind<CitiesController>(Dependency.CitiesController).to(CitiesController);
+  bind<CitiesService>(Dependency.CitiesService).to(CitiesService);
+  bind<CitiesRepository>(Dependency.CitiesRepository).to(CitiesRepository);
 });
 
 const bootstrap = (): Bootstrap => {
