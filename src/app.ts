@@ -1,13 +1,15 @@
 import express, { Express, json } from 'express';
 import { injectable, inject } from 'inversify';
 import { Server } from 'http';
-import { UsersController } from './users/users.controller';
+import { UsersController } from './api/users/users.controller';
 import { AppLogger } from './common/lib/logger/logger.interface';
 import { Dependency } from './config/config.dependency';
 import { AppExceptionFilter } from './common/errors/exception.filter.interface';
 import { AppConfigService } from './config/config.service.interface';
 import { PrismaService } from './database/prisma.service';
 import { AuthMiddleware } from './common/lib/validation/auth.middleware';
+import { TopicsController } from './api/topics/topics.controller';
+import { TagsController } from './api/tags/tags.controller';
 
 @injectable()
 export class App {
@@ -21,6 +23,8 @@ export class App {
     @inject(Dependency.AppExceptionFilter) private exceptionFilter: AppExceptionFilter,
     @inject(Dependency.ConfigService) private configService: AppConfigService,
     @inject(Dependency.PrismaService) private prismaService: PrismaService,
+    @inject(Dependency.TopicsController) private topicController: TopicsController,
+    @inject(Dependency.TagsController) private tagController: TagsController,
   ) {
     this.app = express();
     this.port = 8000;
@@ -34,7 +38,10 @@ export class App {
   }
 
   useRoutes(): void {
+    // @question: версионирование api, как правильно делать?
     this.app.use('/users', this.userController.router);
+    this.app.use('/topics', this.topicController.router);
+    this.app.use('/tags', this.tagController.router);
   }
 
   useExceptionFilters(): void {

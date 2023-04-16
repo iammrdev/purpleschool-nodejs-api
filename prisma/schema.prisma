@@ -10,9 +10,78 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model UserModel {
-    id       Int    @id @default(autoincrement())
-    email    String
-    password String
-    name     String
+model User {
+  id       Int    @id @default(autoincrement())
+  email    String
+  password String
+  name     String
+
+  UserOnSubscribe UserOnSubscribe[]
+  Topic           Topic?            @relation(fields: [topicId], references: [id])
+  topicId         Int?
+}
+
+model Topic {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  offers          Offer[]
+  users           User[]
+  UserOnSubscribe UserOnSubscribe[]
+}
+
+model Offer {
+  id        Int      @id @default(autoincrement())
+  title     String
+  text      String
+  startAt   DateTime @default(now())
+  endAt     DateTime @default(now())
+  url       String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  topicId Int
+  topic   Topic @relation(fields: [topicId], references: [id])
+
+  cityId Int
+  city   City @relation(fields: [cityId], references: [id])
+
+  tags       Tag[]
+  OfferOnTag OfferOnTag[]
+}
+
+model City {
+  id     Int     @id @default(autoincrement())
+  name   String
+  offers Offer[]
+}
+
+model Tag {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  offers     Offer[]
+  OfferOnTag OfferOnTag[]
+}
+
+model OfferOnTag {
+  offer     Offer    @relation(fields: [offerId], references: [id])
+  offerId   Int
+  tag       Tag      @relation(fields: [tagId], references: [id])
+  tagId     Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([offerId, tagId])
+}
+
+model UserOnSubscribe {
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  topic     Topic    @relation(fields: [topicId], references: [id])
+  topicId   Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([userId, topicId])
 }

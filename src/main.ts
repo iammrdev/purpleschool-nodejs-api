@@ -12,6 +12,12 @@ import { AppConfigService } from './config/config.service.interface';
 import { PrismaService } from './database/prisma.service';
 import { UsersService } from './api/users/users.service';
 import { UsersRepository } from './api/users/users.repository';
+import { TopicsController } from './api/topics/topics.controller';
+import { TopicsService } from './api/topics/topics.service';
+import { TopicsRepository } from './api/topics/topics.repository';
+import { TagsController } from './api/tags/tags.controller';
+import { TagsService } from './api/tags/tags.service';
+import { TagsRepository } from './api/tags/tags.repository';
 
 type Bootstrap = {
   app: App;
@@ -30,6 +36,12 @@ export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
   bind<UsersController>(Dependency.UsersController).to(UsersController);
   bind<UsersService>(Dependency.UsersService).to(UsersService);
   bind<UsersRepository>(Dependency.UsersRepository).to(UsersRepository);
+  bind<TopicsController>(Dependency.TopicsController).to(TopicsController);
+  bind<TopicsService>(Dependency.TopicsService).to(TopicsService);
+  bind<TopicsRepository>(Dependency.TopicsRepository).to(TopicsRepository);
+  bind<TagsController>(Dependency.TagsController).to(TagsController);
+  bind<TagsService>(Dependency.TagsService).to(TagsService);
+  bind<TagsRepository>(Dependency.TagsRepository).to(TagsRepository);
 });
 
 const bootstrap = (): Bootstrap => {
