@@ -1,4 +1,16 @@
 @baseUrl =  http://localhost:8000
+@token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGxvY2FsLmlvIiwiaWF0IjoxNjgxNjc2ODM4fQ.-0WfQEWFTb-zHJTwUzds4d0UWlPiaabGKuLsF2O27SM
+
+# Signup
+POST {{baseUrl}}/users/signup HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "admin@local.io",
+  "name": "Vitalii",
+  "password": "123456"
+}
+###
 
 
 # Signin
@@ -6,7 +18,13 @@ POST {{baseUrl}}/users/signin HTTP/1.1
 Content-Type: application/json
 
 {
-  "login": "admin",
-  "password": 123456
+  "email": "admin@local.io",
+  "password": "123456"
 }
+###
+
+# User info
+GET {{baseUrl}}/users/info HTTP/1.1
+Authorization: {{token}}
+
 ###

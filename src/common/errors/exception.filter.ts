@@ -1,26 +1,18 @@
-import { NextFunction, Request, Response } from "express";
-import { LoggerService } from "../lib/logger/logger.service.js";
-import { IExceptionFilter } from "./exception.filter.interface.js";
-import { HTTPError } from "./http-error.js";
+import { NextFunction, Request, Response } from 'express';
+import { injectable, inject } from 'inversify';
+import { Dependency } from '../../config/config.dependency';
+import { AppLogger } from '../lib/logger/logger.interface';
+import { AppExceptionFilter } from './exception.filter.interface';
+import { HTTPError } from './http-error';
 
-export class ExceptionFilter implements IExceptionFilter {
-  logger: LoggerService;
+@injectable()
+export class ExceptionFilter implements AppExceptionFilter {
+  constructor(@inject(Dependency.AppLogger) private logger: AppLogger) {}
 
-  constructor(logger: LoggerService) {
-    this.logger = logger;
-  }
-
-  catch(
-    error: Error | HTTPError,
-    _req: Request,
-    res: Response,
-    _next: NextFunction
-  ) {
+  catch(error: Error | HTTPError, _req: Request, res: Response, _next: NextFunction): void {
     if (error instanceof HTTPError) {
       this.logger.error(
-        `${error.statusCode} ${error.message} ${
-          error.context ? `[${error.context}]` : ""
-        }`
+        `${error.statusCode} ${error.message} ${error.context ? `[${error.context}]` : ''}`,
       );
       res.status(error.statusCode).send({ error: error.message });
       return;
