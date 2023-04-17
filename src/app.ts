@@ -11,6 +11,7 @@ import { AuthMiddleware } from './common/lib/validation/auth.middleware';
 import { TopicsController } from './api/topics/topics.controller';
 import { TagsController } from './api/tags/tags.controller';
 import { CitiesController } from './api/cities/cities.controller';
+import { OffersController } from './api/offers/offers.controller';
 
 @injectable()
 export class App {
@@ -27,6 +28,7 @@ export class App {
     @inject(Dependency.TopicsController) private topicsController: TopicsController,
     @inject(Dependency.TagsController) private tagsController: TagsController,
     @inject(Dependency.CitiesController) private citiesController: CitiesController,
+    @inject(Dependency.OffersController) private offersController: OffersController,
   ) {
     this.app = express();
     this.port = 8000;
@@ -45,6 +47,7 @@ export class App {
     this.app.use('/topics', this.topicsController.router);
     this.app.use('/tags', this.tagsController.router);
     this.app.use('/cities', this.citiesController.router);
+    this.app.use('/offers', this.offersController.router);
   }
 
   useExceptionFilters(): void {

@@ -21,4 +21,8 @@ export const Dependency = {
   CitiesController: Symbol.for('CitiesContoller'),
   CitiesService: Symbol.for('CitiesService'),
   CitiesRepository: Symbol.for('CitiesRepository'),
+
+  OffersController: Symbol.for('OffersContoller'),
+  OffersService: Symbol.for('OffersService'),
+  OffersRepository: Symbol.for('OffersRepository'),
 };

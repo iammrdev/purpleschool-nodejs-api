@@ -43,8 +43,8 @@ export class CitiesController extends BaseController implements AppCitiesControl
   }
 
   public async getAll(_req: Request, res: Response, _next: NextFunction): Promise<void> {
-    const Cities = await this.citiesService.getCities();
+    const cities = await this.citiesService.getCities();
 
-    this.ok(res, Cities);
+    this.ok(res, cities);
   }
 }

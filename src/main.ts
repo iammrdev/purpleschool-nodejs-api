@@ -21,6 +21,9 @@ import { TagsRepository } from './api/tags/tags.repository';
 import { CitiesController } from './api/cities/cities.controller';
 import { CitiesService } from './api/cities/cities.service';
 import { CitiesRepository } from './api/cities/cities.repository';
+import { OffersController } from './api/offers/offers.controller';
+import { OffersService } from './api/offers/offers.service';
+import { OffersRepository } from './api/offers/offers.repository';
 
 type Bootstrap = {
   app: App;
@@ -34,20 +37,33 @@ export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
   bind<AppExceptionFilter>(Dependency.AppExceptionFilter).to(ExceptionFilter);
   bind<PrismaService>(Dependency.PrismaService).to(PrismaService).inSingletonScope();
 
-  // controllers
+  // app
   bind<App>(Dependency.Application).to(App);
+
+  // users
   bind<UsersController>(Dependency.UsersController).to(UsersController);
   bind<UsersService>(Dependency.UsersService).to(UsersService);
   bind<UsersRepository>(Dependency.UsersRepository).to(UsersRepository);
+
+  // topics
   bind<TopicsController>(Dependency.TopicsController).to(TopicsController);
   bind<TopicsService>(Dependency.TopicsService).to(TopicsService);
   bind<TopicsRepository>(Dependency.TopicsRepository).to(TopicsRepository);
+
+  // tags
   bind<TagsController>(Dependency.TagsController).to(TagsController);
   bind<TagsService>(Dependency.TagsService).to(TagsService);
   bind<TagsRepository>(Dependency.TagsRepository).to(TagsRepository);
+
+  // cities
   bind<CitiesController>(Dependency.CitiesController).to(CitiesController);
   bind<CitiesService>(Dependency.CitiesService).to(CitiesService);
   bind<CitiesRepository>(Dependency.CitiesRepository).to(CitiesRepository);
+
+  // offers
+  bind<OffersController>(Dependency.OffersController).to(OffersController);
+  bind<OffersService>(Dependency.OffersService).to(OffersService);
+  bind<OffersRepository>(Dependency.OffersRepository).to(OffersRepository);
 });
 
 const bootstrap = (): Bootstrap => {
