@@ -66,4 +66,42 @@ export class OffersRepository implements AppOffersRepository {
       },
     });
   }
+
+  async updateById(id: number, offer: Partial<Offer>): Promise<OfferModel> {
+    return this.prismaService.client.offer.update({
+      where: {
+        id,
+      },
+      data: {
+        title: offer.title,
+        description: offer.description,
+        url: offer.url,
+        startAt: offer.startAt,
+        endAt: offer.endAt,
+        cityId: offer.cityId,
+        topicId: offer.topicId,
+        tags: {
+          connect: offer.tags?.map((tagId) => ({ id: tagId })),
+        },
+      },
+      include: {
+        tags: true,
+        city: true,
+        topic: true,
+      },
+    });
+  }
+
+  async deleteById(id: number): Promise<boolean> {
+    await this.prismaService.client.offer.delete({
+      where: {
+        id,
+      },
+    });
+
+    // @question: нужно использовать try/catch? на каких слоях это нужно делать?
+
+    // @question: что лучше возвращать при удалении из репозитория?
+    return true;
+  }
 }

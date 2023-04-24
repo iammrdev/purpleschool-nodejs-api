@@ -6,6 +6,7 @@ import { OfferCreateDto } from './dto/offer-create.dto';
 import { Offer } from './offers.entity';
 import { AppOffersService } from './offers.service.interface';
 import { AppOffersRepository } from './offers.repository.interface';
+import { OfferUpdateDto } from './dto/offer-update.dto';
 
 @injectable()
 export class OffersService implements AppOffersService {
@@ -31,5 +32,15 @@ export class OffersService implements AppOffersService {
 
   async getOfferById(id: number): Promise<OfferModel | null> {
     return this.offersRepository.findById(id);
+  }
+
+  async updateOffer(id: number, offerDto: OfferUpdateDto): Promise<OfferModel> {
+    const newOffer = new Offer(offerDto);
+
+    return this.offersRepository.updateById(id, newOffer);
+  }
+
+  async deleteOfferById(id: number): Promise<boolean> {
+    return this.offersRepository.deleteById(id);
   }
 }

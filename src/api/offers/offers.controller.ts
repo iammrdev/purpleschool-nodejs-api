@@ -26,6 +26,8 @@ export class OffersController extends BaseController implements AppOffersControl
       },
       { path: '/', method: 'get', func: this.getAll },
       { path: '/:id', method: 'get', func: this.getById },
+      { path: '/:id', method: 'patch', func: this.updateById },
+      { path: '/:id', method: 'delete', func: this.deleteById },
     ]);
   }
 
@@ -40,7 +42,7 @@ export class OffersController extends BaseController implements AppOffersControl
       return next(new HTTPError(422, 'Такая акция уже существует'));
     }
 
-    this.ok(res, result);
+    this.created(res);
   }
 
   public async getAll(_req: Request, res: Response, _next: NextFunction): Promise<void> {
@@ -49,11 +51,45 @@ export class OffersController extends BaseController implements AppOffersControl
     this.ok(res, offers);
   }
 
-  public async getById(req: Request, res: Response, _next: NextFunction): Promise<void> {
+  public async getById(req: Request, res: Response, next: NextFunction): Promise<void> {
     const offerId = Number(req.params.id);
 
     const offer = await this.offersService.getOfferById(offerId);
 
+    if (!offer) {
+      return next(new HTTPError(404, 'Такой акции не существует'));
+    }
+
     this.ok(res, offer);
+  }
+
+  public async updateById(req: Request, res: Response, next: NextFunction): Promise<void> {
+    const offerId = Number(req.params.id);
+
+    const offer = await this.offersService.getOfferById(offerId);
+
+    if (!offer) {
+      return next(new HTTPError(404, 'Такой акции не существует'));
+    }
+
+    const result = await this.offersService.updateOffer(offerId, req.body);
+
+    this.ok(res, result);
+  }
+
+  public async deleteById(req: Request, res: Response, next: NextFunction): Promise<void> {
+    const offerId = Number(req.params.id);
+
+    // @question: где лучше делать проверку на то, что offer существует?
+    // @question: что можно делать в контроллере? его зона ответственности?
+    const offer = await this.offersService.getOfferById(offerId);
+
+    if (!offer) {
+      return next(new HTTPError(404, 'Такой акции не существует'));
+    }
+
+    await this.offersService.deleteOfferById(offerId);
+
+    this.send(res, 204);
   }
 }
