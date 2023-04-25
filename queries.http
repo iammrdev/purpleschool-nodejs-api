@@ -34,7 +34,7 @@ POST {{baseUrl}}/topics HTTP/1.1
 Content-Type: application/json
 
 {
-  "name": "Электроника"
+  "name": "Электроника 2"
 }
 ###
 

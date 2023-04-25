@@ -1,4 +1,4 @@
-import { UserModel } from '@prisma/client';
+import { User as UserModel } from '@prisma/client';
 import { UserSigninDto } from './dto/user-signin.dto';
 import { UserSignupDto } from './dto/user-signup.dto';
 
